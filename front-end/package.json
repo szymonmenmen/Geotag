@@ -1,11 +1,11 @@
 {
-  "name": "generator-frontend-webpack",
+  "name": "Geotag",
   "version": "1.0.0",
-  "description": "generator for frontend apps built on webpack",
+  "description": "Aplikacja do dodawania geotagów do zdjęć",
   "main": "index.js",
   "scripts": {
     "prestart": "npm rebuild node-sass",
-    "start": "webpack-dev-server --inline --content-base dist/ --open",
+    "start": "webpack-dev-server -d --inline --content-base dist/ --open",
     "eslint": "./node_modules/.bin/eslint src/*.js",
     "accessibility": "node ./dev/accessibility-validation.js",
     "htmllint": "node ./dev/html-validator.js",
@@ -52,5 +52,7 @@
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.0.0-beta"
   },
-  "dependencies": {}
+  "dependencies": {
+    "drag-drop": "^4.2.0"
+  }
 }
