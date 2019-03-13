@@ -54,6 +54,12 @@
     "webpack-dev-server": "^2.0.0-beta"
   },
   "dependencies": {
+    "@material/drawer": "^1.0.1",
+    "@material/elevation": "^1.0.0",
+    "@material/icon-button": "^1.0.1",
+    "@material/image-list": "^1.0.0",
+    "@material/top-app-bar": "^1.0.1",
+    "@material/typography": "^1.0.0",
     "drag-drop": "^4.2.0",
     "generate-docs": "^1.1.1",
     "material-components-web": "^1.0.1"

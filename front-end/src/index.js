@@ -1,9 +1,10 @@
 import './assets/styles/styles.scss';
-import MapComponent from './assets/js/map';
+
+import GeotagApp from './assets/js/app'
 
 require('html-loader!./templates/index.html');
 
-let mapComponent = new MapComponent('mapid');
+const app = new GeotagApp();
 
 // L.marker([51.5, -0.09]).addTo(map)
 //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')

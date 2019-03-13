@@ -1,7 +1,26 @@
 @import './variables.scss';
-@import "@material/button/mdc-button";
 
-.foo-button {
-  @include mdc-button-ink-color(teal);
-  @include mdc-states(teal);
+@import "@material/elevation/mdc-elevation";
+@import "@material/icon-button/mdc-icon-button";
+@import "@material/typography/mdc-typography";
+
+@import './components/app_bar.scss';
+@import './components/map.scss';
+@import './components/side_drawer.scss';
+@import './components/photo_list_element.scss';
+
+html body {
+  padding: 0;
+  margin: 0;
 }
+
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  overflow: auto;
+  height: 100%;
+}
+

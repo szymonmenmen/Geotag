@@ -1,0 +1,26 @@
+.mdc-image-list__item {
+  position: relative;
+  cursor: pointer;
+
+  .mdc-top-app-bar__row {
+    position: absolute;
+    bottom: 0;
+    background-color: $tint-color;
+    color: white;
+
+    .mdc-image-list__supporting {
+      color: white;
+    }
+  }
+
+  &:hover {
+    .photo-actions-bar {
+      opacity: 1;
+    }
+  }
+
+  .photo-actions-bar {
+    opacity: 0;
+    transition: 0.5s;
+  }
+}

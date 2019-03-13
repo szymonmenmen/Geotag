@@ -1,0 +1,17 @@
+@import "@material/drawer/mdc-drawer";
+@import "@material/list/mdc-list";
+@import "@material/image-list/mdc-image-list";
+
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+  position: relative;
+}
+
+.mdc-drawer__content {
+  padding: 20px;
+}
+
+.goetag-image-list {
+  @include mdc-image-list-standard-columns(1);
+}

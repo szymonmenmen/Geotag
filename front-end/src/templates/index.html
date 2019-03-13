@@ -1,15 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="stylesheet" href="assets/styles/commons.bundle.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="">
-    <meta charset="utf-8">
-    <title>Hello webpack</title>
+  <link rel="stylesheet" href="assets/styles/commons.bundle.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <meta charset="utf-8">
+  <title>Hello webpack</title>
 </head>
+
 <body>
-<h1>Geotag project</h1><br>
-<div id="mapid"></div>
-<script src="assets/js/commons.js"></script>
-<script src="assets/js/index.bundle.js"></script>
+  <header class="mdc-top-app-bar app-bar mdc-elevation--z5" id="app-bar">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+        <span class="mdc-top-app-bar__title">Geotag</span>
+      </section>
+    </div>
+  </header>
+  <aside id="side-drawer" class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
+    <div class="mdc-drawer__content">
+      <ul id="photo-list" class="mdc-image-list goetag-image-list">
+        <li id="photo-element-template" class="mdc-image-list__item mdc-elevation--z3">
+          <div class="mdc-image-list__image-aspect-container">
+            <img class="photo-list-element-photo mdc-image-list__image" src="https://picsum.photos/200/300/?random">
+          </div>
+          <div class="mdc-top-app-bar__row photo-actions-bar">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+              <span class="mdc-typography mdc-image-list__supporting"></span>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+              <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download"
+                alt="Info" title="Informacje o zdjęciu">info</a>
+              <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download"
+                alt="Edit" title="Edytuj geotag">edit</a>
+              <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download"
+                alt="Download" title="Pobierz">file_download</a>
+            </section>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
+    <main class="main-content" id="main-content">
+      <div id="mapid"></div>
+    </main>
+  </div>
+  <script src="assets/js/commons.js"></script>
+  <script src="assets/js/index.bundle.js"></script>
 </body>
+
 </html>
