@@ -1,13 +1,7 @@
-@import 'vendor/burger';
+@import './variables.scss';
+@import "@material/button/mdc-button";
 
-@import 'base/variables';
-@import 'base/base';
-
-@import 'atoms/typography';
-@import 'atoms/lists';
-@import 'atoms/buttons';
-
-@import 'molecues/logo';
-
-@import 'organisms/header';
-@import 'organisms/map';
+.foo-button {
+  @include mdc-button-ink-color(teal);
+  @include mdc-states(teal);
+}

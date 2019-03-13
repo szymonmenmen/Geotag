@@ -1,17 +1,9 @@
 import './assets/styles/styles.scss';
-import HelloWorld from './assets/js/hello-world';
-import L from "leaflet";
+import MapComponent from './assets/js/map';
 
 require('html-loader!./templates/index.html');
 
-let indexPage = new HelloWorld('Hello from index page!');
-console.log(indexPage.sayHello());
-
-var map = L.map('mapid').setView([51.505, -0.09], 13);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+let mapComponent = new MapComponent('mapid');
 
 // L.marker([51.5, -0.09]).addTo(map)
 //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
