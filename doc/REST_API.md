@@ -16,6 +16,8 @@ Zwraca liste wszystkich przeslanych zdjęc z geotagami.
     "id": "number",
     "file_name": "string",
     "src": "string" // link do miniaturki na serwerze
+    "latitude": "number",
+    "longitude": "number"
   }
 ]
 ```
@@ -26,6 +28,8 @@ Zwraca liste wszystkich przeslanych zdjęc z geotagami.
     "id": 1,
     "file_name": "photo.png",
     "src": "http://localhost:90/images/photo.png"
+    "latitude": 51.56341153817555,
+    "longitude": -0.18127441406250003
 }
 ```
 
