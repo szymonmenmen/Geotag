@@ -4,21 +4,22 @@ import MapComponent from './components/map';
 import AppBarComponent from './components/app_bar';
 import SideDrawerComponent from './components/side_drawer';
 
-
 export default class GeotagApp {
 
   constructor() {
     this.initMDC();
 
     this.map = new MapComponent('mapid');
+    this.map.onFiledDropListener = this.onFileDrop.bind(this);
     this.appBar = new AppBarComponent('app-bar');
     this.sideDrawer = new SideDrawerComponent('side-drawer');
+    this.appBar.drawer = this.sideDrawer;
 
-    this.appBar.setSideDrawer(this.sideDrawer);
+    this.photoListElements = [];
 
-    let photoListElements = [];
+    // TODO pozniej zastapic pobieraniem danych z serwera
     for(let i = 0; i < 10; i++) {
-      photoListElements.push(
+      this.photoListElements.push(
         {
           id: i,
           file_name: "Name-" + i,
@@ -26,9 +27,22 @@ export default class GeotagApp {
         }
       );
     }
-    this.sideDrawer.setElements(photoListElements);
+    this.sideDrawer.setElements(this.photoListElements);
   }
 
+  /**
+   * Metoda wywoływana gdy na mape został zrzucony plik obrazka
+   * 
+   * @param {PhotoElementModel} photoElementModel obiekt z danymi pliku
+   */
+  onFileDrop(photoElementModel) {
+    console.log(photoElementModel);
+    // TODO wyslac na serwer
+  }
+
+  /**
+   * Pierdoly zeby ladnie wygladalo
+   */
   initMDC() {
     const iconButton = document.querySelector('.mdc-icon-button')
     
@@ -36,7 +50,6 @@ export default class GeotagApp {
       const iconButtonRipple = new MDCRipple(iconButton);
       iconButtonRipple.unbounded = true;
     }
-
   }
 
 }
