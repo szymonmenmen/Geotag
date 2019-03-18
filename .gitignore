@@ -74,4 +74,13 @@ application.properties
 src/main/resources/application.properties
 src/main/resources/application.properties
 *.properties
-src/main/resources/application.properties
+back-end/src/main/resources/application.properties
+
+# Maven
+log/
+target/
+back-end/target/
+*/target/*
+
+# Mac
+.DS_Store

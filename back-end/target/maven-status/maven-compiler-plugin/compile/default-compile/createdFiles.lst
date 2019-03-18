@@ -1,0 +1,6 @@
+pl\polsl\geotag\GeotagApplication.class
+pl\polsl\geotag\model\Image.class
+pl\polsl\geotag\exception\RepositoryException.class
+pl\polsl\geotag\service\ImageService.class
+pl\polsl\geotag\controller\RESTController.class
+pl\polsl\geotag\repository\ImageRepository.class
