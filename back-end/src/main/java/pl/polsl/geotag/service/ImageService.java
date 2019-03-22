@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ImageService {
@@ -121,8 +122,12 @@ public class ImageService {
     }
 
     public ResponseEntity<?> getAllImages(String baseUrl) {
-        List<ImageOutputDTO> outputDTOList = new ArrayList<>();
         List<Image> imageList = imageRepository.findAll();
+        return createImageOutputDto(baseUrl, imageList);
+    }
+
+    private ResponseEntity<?> createImageOutputDto(String baseUrl, List<Image> imageList) {
+        List<ImageOutputDTO> outputDTOList = new ArrayList<>();
         imageList.forEach(image ->
         {
             ImageOutputDTO imageOutputDTO = mapImageToOutput(image, baseUrl);
@@ -160,5 +165,12 @@ public class ImageService {
         } catch (IndexOutOfBoundsException e) {
             throw new RepositoryException("Invalid file name");
         }
+    }
+
+    public ResponseEntity<?> getImagesByCoordinates(double latitude, double longitude, String baseUrl) {
+        List<Image> imageList = imageRepository.findAll();
+        List<Image> filteredImageList = imageList.stream().filter(image -> image.getLatitude() == latitude && image.getLongitude() == longitude).collect(Collectors.toList());
+
+        return createImageOutputDto(baseUrl, filteredImageList);
     }
 }

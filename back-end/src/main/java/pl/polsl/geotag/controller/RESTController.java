@@ -9,6 +9,7 @@ import pl.polsl.geotag.service.ImageService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @RequestMapping("/api")
@@ -63,4 +64,12 @@ public class RESTController {
 
         return imageService.getAllImages(baseUrl);
     }
+
+    @GetMapping("/geotag/coordinates")
+    public ResponseEntity<?> getImagesByCoordinates(HttpServletRequest request, @NotNull @RequestParam double latitude, @NotNull @RequestParam double longitude) {
+        String baseUrl = String.format("%s://%s:%d/api", request.getScheme(), request.getServerName(), request.getServerPort());
+
+        return imageService.getImagesByCoordinates(latitude, longitude, baseUrl);
+    }
+
 }
