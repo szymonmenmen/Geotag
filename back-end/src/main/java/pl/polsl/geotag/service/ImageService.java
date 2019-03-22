@@ -9,10 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.polsl.geotag.decoder.Base64Decoder;
-import pl.polsl.geotag.dto.AllImageOutputDTO;
-import pl.polsl.geotag.dto.CreateImageDTO;
-import pl.polsl.geotag.dto.ImageOutputDTO;
-import pl.polsl.geotag.dto.UpdateImageDTO;
+import pl.polsl.geotag.dto.*;
 import pl.polsl.geotag.exception.RepositoryException;
 import pl.polsl.geotag.model.Image;
 import pl.polsl.geotag.repository.ImageRepository;
@@ -25,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,18 +33,6 @@ public class ImageService {
     public static final int THUMBNAIL_HEIGHT = 200;
     @Autowired
     ImageRepository imageRepository;
-
-//    public Image save(MultipartFile file) {
-//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//        String contentType = file.getContentType();
-//        try {
-//            Image image = new Image(file.getBytes(), fileName, contentType, 10, 10);
-//
-//            return imageRepository.save(image);
-//        } catch (IOException e) {
-//            throw new RepositoryException("Could not store file " + fileName + ". Please try again!");
-//        }
-//    }
 
     public ResponseEntity<?> addImage(final CreateImageDTO createImageDTO) {
         //TODO save latitude & longitude to image
@@ -123,18 +109,25 @@ public class ImageService {
 
     public ResponseEntity<?> getAllImages(String baseUrl) {
         List<Image> imageList = imageRepository.findAll();
-        return createImageOutputDto(baseUrl, imageList);
+        Map<Double, Map<Double, List<Image>>> map = imageList.stream().collect(Collectors.groupingBy(Image::getLatitude, Collectors.groupingBy(Image::getLongitude)));
+
+        List<AllImageOutputDTO> imageOutputDTOS = new ArrayList<>();
+        map.values().forEach(nestedMap ->
+                nestedMap.values().forEach(images ->
+                        imageOutputDTOS.add(createImageOutputDto(baseUrl, images))));
+
+        SortedImageDTO sortedImageDTOS = new SortedImageDTO(imageOutputDTOS);
+        return ResponseEntity.ok().body(sortedImageDTOS);
     }
 
-    private ResponseEntity<?> createImageOutputDto(String baseUrl, List<Image> imageList) {
+    private AllImageOutputDTO createImageOutputDto(String baseUrl, List<Image> imageList) {
         List<ImageOutputDTO> outputDTOList = new ArrayList<>();
         imageList.forEach(image ->
         {
             ImageOutputDTO imageOutputDTO = mapImageToOutput(image, baseUrl);
             outputDTOList.add(imageOutputDTO);
         });
-        AllImageOutputDTO response = new AllImageOutputDTO(outputDTOList);
-        return ResponseEntity.ok(response);
+        return new AllImageOutputDTO(outputDTOList);
     }
 
     private ImageOutputDTO mapImageToOutput(Image image, String baseUrl) {
@@ -171,6 +164,7 @@ public class ImageService {
         List<Image> imageList = imageRepository.findAll();
         List<Image> filteredImageList = imageList.stream().filter(image -> image.getLatitude() == latitude && image.getLongitude() == longitude).collect(Collectors.toList());
 
-        return createImageOutputDto(baseUrl, filteredImageList);
+        AllImageOutputDTO response = createImageOutputDto(baseUrl, filteredImageList);
+        return ResponseEntity.ok().body(response);
     }
 }

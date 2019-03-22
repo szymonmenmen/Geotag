@@ -19,15 +19,6 @@ public class RESTController {
     @Autowired
     private ImageService imageService;
 
-//    @PostMapping("/image")
-//    public ResponseEntity<String> createImage(@RequestParam("file") MultipartFile file) {
-//        Image savedFile = imageService.save(file);
-//
-//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(savedFile.getId().toString()).toUriString();
-//
-//        return ResponseEntity.ok(fileDownloadUri);
-//    }
-
     @PostMapping("/geotag")
     public ResponseEntity<?> addImage(@Valid @RequestBody CreateImageDTO createImageDto) {
         return imageService.addImage(createImageDto);
@@ -60,7 +51,7 @@ public class RESTController {
 
     @GetMapping("/geotag")
     public ResponseEntity<?> getAllImages(HttpServletRequest request) {
-        String baseUrl = String.format("%s://%s:%d/api",request.getScheme(),  request.getServerName(), request.getServerPort());
+        String baseUrl = String.format("%s://%s:%d/api", request.getScheme(), request.getServerName(), request.getServerPort());
 
         return imageService.getAllImages(baseUrl);
     }
