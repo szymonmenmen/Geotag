@@ -5,6 +5,7 @@
 /dist-server
 /tmp
 /out-tsc
+/apache24
 
 # dependencies
 /node_modules

@@ -8,3 +8,28 @@
 .mdc-top-app-bar {
   z-index: 7;
 }
+
+#location-searchchbox {
+  border-radius: 200px;
+  height: 64%;
+  position: absolute;
+  right: 10px;
+  float: right;
+  background-color: white;
+  color: white !important;
+
+  @include mdc-text-field-ink-color(black);
+  //@include mdc-text-field-label-color(white);
+
+  input {
+    padding-right: 0;
+    width: 87%;
+    border-bottom: none !important;
+  }
+
+  .mdc-icon-button {
+    @include mdc-icon-button-ink-color(black);
+    position: relative;
+    top: -4px;
+  }
+}

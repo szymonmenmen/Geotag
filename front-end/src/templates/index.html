@@ -8,20 +8,34 @@
     crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <meta charset="utf-8">
-  <title>Hello webpack</title>
+  <title>Geotag</title>
 </head>
 
 <body>
+  <!-- Górny pasek -->
   <header class="mdc-top-app-bar app-bar mdc-elevation--z5" id="app-bar">
     <div class="mdc-top-app-bar__row">
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
         <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
         <span class="mdc-top-app-bar__title">Geotag</span>
+        <div></div>
+        <div id="location-searchchbox"
+          class="mdc-text-field mdc-text-field--no-label mdc-text-field--with-trailing-icon">
+          <input id="location-search-input" type="text" class="mdc-text-field__input">
+          <button id="location-search-button" class="mdc-icon-button material-icons">search</button>
+        </div>
       </section>
-    </div>
   </header>
+  <!-- Panel boczny -->
   <aside id="side-drawer" class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
-    <div class="mdc-drawer__content">
+    <div id="side-drawer-header" class="mdc-drawer__header">
+      <button id="side-drawer-arrow-back-button" class="mdc-icon-button material-icons">arrow_back</button>
+      <h3 class="mdc-drawer__title">Wybrany geotag</h3>
+      <h6 id="side-drawer-latitude" class="mdc-drawer__subtitle"></h6>
+      <h6 id="side-drawer-longitude" class="mdc-drawer__subtitle"></h6>
+    </div>
+    <hr class="mdc-list-divider">
+    <div id="side-drawer-list" class="mdc-drawer__content">
       <ul id="photo-list" class="mdc-image-list goetag-image-list">
         <li id="photo-element-template" class="mdc-image-list__item mdc-elevation--z3">
           <div class="mdc-image-list__image-aspect-container">
@@ -32,12 +46,15 @@
               <span class="mdc-typography mdc-image-list__supporting"></span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-              <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download"
-                alt="Info" title="Informacje o zdjęciu">info</a>
-              <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download"
-                alt="Edit" title="Edytuj geotag">edit</a>
-              <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download"
-                alt="Download" title="Pobierz">file_download</a>
+              <!-- Przycisk info o zdjeciu -->
+              <a href="#" class="photo-info-button material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                aria-label="Download" alt="Info" title="Informacje o zdjęciu">info</a>
+              <!-- Przycisk usuniecia zdjecia -->
+              <a href="#" class="photo-delete-button material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                aria-label="Download" alt="Edit" title="Edytuj geotag">delete</a>
+              <!-- Przycisk pobrania zdjecia -->
+              <a href="#" class="photo-download-button material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                aria-label="Download" alt="Download" title="Pobierz">file_download</a>
             </section>
           </div>
         </li>
@@ -48,8 +65,147 @@
   <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
     <main class="main-content" id="main-content">
       <div id="mapid"></div>
+      <div id="map-context-menu" class="mdc-menu mdc-menu-surface" tabindex="-1">
+        <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+          <li id="map-menu-edit-option" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__text">
+              <i class="material-icons">edit</i>
+              Edytuj
+            </span>
+          </li>
+        </ul>
+      </div>
     </main>
   </div>
+
+  <!-- Komponent do przesylania -->
+  <div id="upload-component" class="mdc-card">
+    <div class="mdc-list-item mdc-ripple-upgraded">
+      <span class="mdc-list-item__graphic material-icons" aria-hidden="true">folder</span>
+      <span class="mdc-list-item__text">
+        <span id="upload-component-primary-text" class="mdc-typography mdc-list-item__primary-text"></span>
+      </span>
+    </div>
+    <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+      <div class="mdc-linear-progress__buffering-dots"></div>
+      <div class="mdc-linear-progress__buffer"></div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Komponent dla wynikow wyszukiawania lokazliacji-->
+  <div id="search-results-component" class="mdc-card">
+    <div class="mdc-list-item mdc-ripple-upgraded">
+      <div id="search-results-header">
+        <button id="location-search-result-close-button" class="mdc-icon-button material-icons">close</button>
+        <span id="search-results-component-primary-text" class="mdc-typography mdc-list-item__primary-text">
+          Wyniki wyszukiwania
+        </span>
+      </div>
+    </div>
+    <ul id="search-results-list" class="mdc-list" role="listbox">
+      <li id="search-results-list-item-template" class="mdc-list-item" role="option" tabindex="0">
+        <span class="item-content mdc-list-item__text"></span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Snackbar -->
+  <div id="snackbar" class="mdc-snackbar">
+    <div class="mdc-snackbar__surface">
+      <div class="mdc-snackbar__label" role="status" aria-live="polite">
+        Can't send photo. Retry in 5 seconds.
+      </div>
+      <div class="mdc-snackbar__actions">
+        <button type="button" class="mdc-button mdc-snackbar__action">Retry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog do uploadu plikow -->
+  <div id="photo-dialog" class="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title"
+    aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+      <div class="mdc-dialog__surface">
+        <h2 class="mdc-dialog__title" id="photo-dialog-title">
+          Przesyłanie nowego pliku
+        </h2>
+        <div class="mdc-dialog__content" id="upload-dialog-content">
+          <div id="photo-dialog-spinner-wrapper" class="spinner-wrapper">
+            <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+              <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+            </svg>
+          </div>
+          <!-- Lista z przesylanymi zdjeciami -->
+          <ul id="uploaded-photos-list" class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
+            <li id="uploaded-photos-template" class="mdc-image-list__item">
+              <!-- Przesylany obrazek -->
+              <img class="mdc-image-list__image" src="" alt="przesyłane zdjęcie">
+              <div class="mdc-image-list__supporting">
+                <!-- Nazwa pliku -->
+                <span class="mdc-image-list__label"></span>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <br>
+            Geotag
+            <br>
+            <span>latitude: <span id="uploaded-geotag-latitude">--</span></span>
+            <br>
+            <span>longitude: <span id="uploaded-geotag-longitude">--</span></span>
+          </div>
+        </div>
+        <footer class="mdc-dialog__actions">
+          <button type="button" class="mdc-button mdc-dialog__button" id="upload-dialog-dismiss-button"
+            data-mdc-dialog-action="no">
+            <span class="mdc-button__label">Anuluj</span>
+          </button>
+          <button type="button" class="mdc-button mdc-dialog__button" id="upload-dialog-submit-button"
+            data-mdc-dialog-action="yes">
+            <span class="mdc-button__label">Zapisz</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+  </div>
+  <!-- Dialog do wyswietlania informacji o pliku -->
+  <div id="photo-info-dialog" class="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title"
+    aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+      <div class="mdc-dialog__surface">
+        <h2 class="mdc-dialog__title" id="photo-info-dialog-title">
+          Nazwa pliku
+        </h2>
+        <div class="mdc-dialog__content" id="info-dialog-content">
+          <!-- Lista z przesylanymi zdjeciami -->
+          <img id="photo-info-dialog-photo" src="" alt="Wybrane zdjęcie">
+          <div>
+            <br>
+            Geotag
+            <br>
+            <span>latitude: <span id="photo-info-dialog-latitude">--</span></span>
+            <br>
+            <span>longitude: <span id="photo-info-dialog-longitude">--</span></span>
+          </div>
+        </div>
+        <footer class="mdc-dialog__actions">
+          <button type="button" class="mdc-button mdc-dialog__button" id="info-dialog-dismiss-button"
+            data-mdc-dialog-action="no">
+            <span class="mdc-button__label">Ok</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+  </div>
+
   <script src="assets/js/commons.js"></script>
   <script src="assets/js/index.bundle.js"></script>
 </body>

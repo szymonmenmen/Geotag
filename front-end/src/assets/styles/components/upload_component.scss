@@ -1,0 +1,18 @@
+#upload-component {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  width: 216px;
+  padding: 5px;
+
+  #upload-component-primary-text {
+    margin-bottom: -1px;
+  }
+
+  #upload-component-progress-bar {
+    display: block;
+  }
+}
