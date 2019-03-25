@@ -103,6 +103,29 @@
 			"response": []
 		},
 		{
+			"name": "get objects by coordinates in range",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"min_longitude\" : 3,\n\t\"max_longitude\" : 20,\n\t\"min_latitude\" : 3,\n\t\"max_latitude\" : 4\n}"
+				},
+				"url": "http://localhost:8082/api/geotag/coordinates/range"
+			},
+			"response": []
+		},
+		{
 			"name": "Save image",
 			"request": {
 				"method": "POST",
