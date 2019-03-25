@@ -2,12 +2,28 @@
 
 @import "@material/elevation/mdc-elevation";
 @import "@material/icon-button/mdc-icon-button";
+@import "@material/button/mdc-button";
 @import "@material/typography/mdc-typography";
+@import "@material/list/mdc-list";
+@import "@material/image-list/mdc-image-list";
+@import "@material/card/mdc-card";
+@import "@material/linear-progress/mdc-linear-progress";
+@import "@material/list/mdc-list";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
+@import "@material/textfield/mdc-text-field";
 
 @import './components/app_bar.scss';
 @import './components/map.scss';
 @import './components/side_drawer.scss';
 @import './components/photo_list_element.scss';
+@import './components/photo_upload_dialog.scss';
+@import './components/snackbar.scss';
+@import './components/spinner.scss';
+@import './components/upload_component.scss';
+@import './components/photo_info_dialog.scss';
+@import './components/search_results_component.scss';
+
 
 html body {
   padding: 0;
@@ -24,3 +40,15 @@ body {
   height: 100%;
 }
 
+.mdc-dialog {
+  z-index: 1000;
+}
+
+
+.mdc-drawer-app-content {
+  width: 100%;
+}
+
+.mdc-menu {
+  z-index: 2000;
+}

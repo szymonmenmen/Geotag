@@ -1,17 +1,37 @@
 @import "@material/drawer/mdc-drawer";
-@import "@material/list/mdc-list";
-@import "@material/image-list/mdc-image-list";
 
-.mdc-drawer-app-content {
-  flex: auto;
-  overflow: auto;
-  position: relative;
-}
 
-.mdc-drawer__content {
-  padding: 20px;
-}
+#side-drawer {
+  .mdc-drawer-app-content {
+    flex: auto;
+    position: relative;
+  }
 
-.goetag-image-list {
-  @include mdc-image-list-standard-columns(1);
+  .mdc-drawer__content {
+    padding: 20px;
+    overflow-y: scroll;
+  }
+
+  .goetag-image-list {
+    @include mdc-image-list-standard-columns(1);
+  }
+
+  .mdc-drawer__title {
+    display: inline;
+  }
+
+  #side-drawer-arrow-back-button {
+    position: relative;
+    top: 5px;
+  }
+
+  #side-drawer-header {
+    display: none;
+    padding-bottom: 13px;
+  }
+
+  #side-drawer-list {
+    overflow: hidden;
+    padding: 0;
+  }
 }

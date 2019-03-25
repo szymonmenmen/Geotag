@@ -1,0 +1,21 @@
+#search-results-component {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  z-index: 1000;
+
+  width: 350px;
+  padding: 5px;
+
+  #search-results-component-primary-text {
+    margin-bottom: -1px;
+  }
+
+  #search-results-header {
+    width: 100%;
+    button {
+      float: left;
+    }
+  }
+}

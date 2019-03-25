@@ -1,0 +1,20 @@
+@import "@material/dialog/mdc-dialog";
+
+#photo-dialog {
+  .mdc-dialog__container {
+    max-height: 80%;
+  }
+
+  #upload-dialog-content {
+    overflow: hidden;
+  }
+
+  #uploaded-photos-list {
+    max-height: 85%;
+    overflow: auto;
+  }
+
+  .mdc-dialog__content {
+    
+  }
+}
