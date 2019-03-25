@@ -3,6 +3,7 @@ package pl.polsl.geotag.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.geotag.dto.CoordinatesRangeDTO;
 import pl.polsl.geotag.dto.CreateImageDTO;
 import pl.polsl.geotag.dto.UpdateImageDTO;
 import pl.polsl.geotag.service.ImageService;
@@ -51,16 +52,27 @@ public class RESTController {
 
     @GetMapping("/geotag")
     public ResponseEntity<?> getAllImages(HttpServletRequest request) {
-        String baseUrl = String.format("%s://%s:%d/api", request.getScheme(), request.getServerName(), request.getServerPort());
+        String baseUrl = getBaseUrl(request);
 
         return imageService.getAllImages(baseUrl);
     }
 
     @GetMapping("/geotag/coordinates")
     public ResponseEntity<?> getImagesByCoordinates(HttpServletRequest request, @NotNull @RequestParam double latitude, @NotNull @RequestParam double longitude) {
-        String baseUrl = String.format("%s://%s:%d/api", request.getScheme(), request.getServerName(), request.getServerPort());
+        String baseUrl = getBaseUrl(request);
 
         return imageService.getImagesByCoordinates(latitude, longitude, baseUrl);
+    }
+
+    @GetMapping("/geotag/coordinates/range")
+    public ResponseEntity<?> getImagesByCoordinatesRange(HttpServletRequest request, @Valid @RequestBody CoordinatesRangeDTO coordinatesRangeDTO) {
+        String baseUrl = getBaseUrl(request);
+
+        return imageService.getImagesByCoordinatesRange(coordinatesRangeDTO, baseUrl);
+    }
+
+    private String getBaseUrl(HttpServletRequest request) {
+        return String.format("%s://%s:%d/api", request.getScheme(), request.getServerName(), request.getServerPort());
     }
 
 }

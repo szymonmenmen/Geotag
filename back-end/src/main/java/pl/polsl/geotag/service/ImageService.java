@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -166,5 +167,20 @@ public class ImageService {
 
         AllImageOutputDTO response = createImageOutputDto(baseUrl, filteredImageList);
         return ResponseEntity.ok().body(response);
+    }
+
+    public ResponseEntity<?> getImagesByCoordinatesRange(CoordinatesRangeDTO coordinatesRangeDTO, String baseUrl) {
+        List<Image> imageList = imageRepository.findAll();
+        List<Image> filteredImageList = imageList.stream().filter(filterCoordinates(coordinatesRangeDTO)).collect(Collectors.toList());
+
+        AllImageOutputDTO response = createImageOutputDto(baseUrl, filteredImageList);
+        return ResponseEntity.ok().body(response);
+    }
+
+    private Predicate<Image> filterCoordinates(CoordinatesRangeDTO coordinatesRangeDTO) {
+        return image -> image.getLatitude() >= coordinatesRangeDTO.getMinLatitude() //
+                && image.getLatitude() <= coordinatesRangeDTO.getMaxLatitude() //
+                && image.getLongitude() >= coordinatesRangeDTO.getMinLongitude() //
+                && image.getLongitude() <= coordinatesRangeDTO.getMaxLongitude();
     }
 }
