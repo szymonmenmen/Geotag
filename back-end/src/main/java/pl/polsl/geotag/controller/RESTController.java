@@ -65,9 +65,10 @@ public class RESTController {
     }
 
     @GetMapping("/geotag/coordinates/range")
-    public ResponseEntity<?> getImagesByCoordinatesRange(HttpServletRequest request, @Valid @RequestBody CoordinatesRangeDTO coordinatesRangeDTO) {
+    public ResponseEntity<?> getImagesByCoordinatesRange(HttpServletRequest request, @NotNull @RequestParam double min_latitude, @NotNull @RequestParam double max_latitude, @NotNull @RequestParam double min_longitude, @NotNull @RequestParam double max_longitude) {
         String baseUrl = getBaseUrl(request);
 
+        CoordinatesRangeDTO coordinatesRangeDTO = new CoordinatesRangeDTO(min_latitude, max_latitude, min_longitude, max_longitude);
         return imageService.getImagesByCoordinatesRange(coordinatesRangeDTO, baseUrl);
     }
 

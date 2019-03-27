@@ -104,9 +104,6 @@
 		},
 		{
 			"name": "get objects by coordinates in range",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [
@@ -119,9 +116,40 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"min_longitude\" : 3,\n\t\"max_longitude\" : 20,\n\t\"min_latitude\" : 3,\n\t\"max_latitude\" : 4\n}"
+					"raw": ""
 				},
-				"url": "http://localhost:8082/api/geotag/coordinates/range"
+				"url": {
+					"raw": "http://localhost:8082/api/geotag/coordinates/range?min_latitude=12.6&min_longitude=12.7&max_latitude=12.6&max_longitude=12.7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"geotag",
+						"coordinates",
+						"range"
+					],
+					"query": [
+						{
+							"key": "min_latitude",
+							"value": "12.6"
+						},
+						{
+							"key": "min_longitude",
+							"value": "12.7"
+						},
+						{
+							"key": "max_latitude",
+							"value": "12.6"
+						},
+						{
+							"key": "max_longitude",
+							"value": "12.7"
+						}
+					]
+				}
 			},
 			"response": []
 		},

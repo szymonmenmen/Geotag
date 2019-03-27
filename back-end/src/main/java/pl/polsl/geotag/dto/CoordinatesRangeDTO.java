@@ -47,4 +47,11 @@ public class CoordinatesRangeDTO {
     public void setMaxLongitude(double maxLongitude) {
         this.maxLongitude = maxLongitude;
     }
+
+    public CoordinatesRangeDTO(double minLatitude, double maxLatitude, double minLongitude, double maxLongitude) {
+        this.minLatitude = minLatitude;
+        this.maxLatitude = maxLatitude;
+        this.minLongitude = minLongitude;
+        this.maxLongitude = maxLongitude;
+    }
 }
