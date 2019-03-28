@@ -8,6 +8,7 @@ export default appConfig = {
   endpoins: {
     image: 'geotag',
     coordinates: 'geotag/coordinates',
+    coordinatesRange: 'geotag/coordinates/range',
     thumbnail: 'downloads/thumbnail',
     geotags: 'geotag/localization',
     download: 'downloads'

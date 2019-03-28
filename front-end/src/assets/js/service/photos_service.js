@@ -96,8 +96,6 @@ export default class PhotoService {
 
     let xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
-      console.log('sddsadsadfsf');
-      
       if (this.status == 204) {
         onSuccess(this);
       } else {
@@ -170,6 +168,36 @@ export default class PhotoService {
     let url = this.baseServerUrl + appConfig.endpoins.coordinates;
 
     url += ('?latitude=' + lat + '&longitude=' +  lng);
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+      if (this.status == 200) {
+        onSuccess(JSON.parse(this.responseText).images);
+      } else {
+        onError(this);
+      }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+  }
+
+  /**
+  * Metoda pobiera liste zdjec zwiazanych z danym punktem na mapie
+  *
+  * @public
+  * @param minLat
+  * @param maxLat
+  * @param minLng
+  * @param maxLng
+  * @param onSuccess callback dla poprawnego wykonania
+  * @param onError callback dla błędu
+  */
+  getPhotosByLatLngRange(minLat, maxLat, minLng, maxLng, onSuccess, onError ) {
+    let url = this.baseServerUrl + appConfig.endpoins.coordinatesRange + '?';
+    url += 'min_latitude=' + minLat + '&';
+    url += 'min_longitude=' + minLng + '&';
+    url += 'max_latitude=' + maxLat + '&';
+    url += 'max_longitude=' + maxLng;
 
     let xhttp = new XMLHttpRequest();
     xhttp.onload = function () {

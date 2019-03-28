@@ -3,7 +3,6 @@ import appConfig from '../config';
 import SnackbarComponent from "./snackbar";
 import HyperList from 'hyperlist';
 
-
 let sideDrawerComponentThis = null;
 /**
  * Komponent bocznego wysuwanego panelu z lista zdjęc
@@ -22,19 +21,31 @@ export default class SideDrawerComponent {
     this.element = document.getElementById('side-drawer');
     this.service = service;
     this.photoInfoDialog = photoInfoDialog;
-    this.headerElement = document.getElementById('side-drawer-header');
+    this.geotagHeaderElement = document.getElementById('side-drawer-geotag-header');
+    this.areaHeaderElement = document.getElementById('side-drawer-area-header');
     document.getElementById('side-drawer-arrow-back-button')
       .addEventListener("click", function (event) {
         this.showAllPhotos();
       }.bind(this));
-    this.latitudeElement = document.getElementById('side-drawer-latitude');
-    this.longitudeElement = document.getElementById('side-drawer-longitude');
+    document.getElementById('side-drawer-arrow-back-button-2')
+      .addEventListener("click", function (event) {
+        this.showAllPhotos();
+      }.bind(this));
+    this.latitudeElement = this.geotagHeaderElement.querySelector('#side-drawer-latitude');
+    this.longitudeElement = this.geotagHeaderElement.querySelector('#side-drawer-longitude');
     this.listElement = document.getElementById('photo-list');
     this.listElementContainer = document.getElementById('side-drawer-list');
     this.tempate = document.getElementById('photo-element-template');
     this.tempate.parentNode.removeChild(this.tempate);
     this.onListElementClick = null;
 
+    this.initHyperList();
+
+    this.drawer = MDCDrawer.attachTo(document.querySelector('#' + this.id));
+    this.idHashmap = {};
+  }
+
+  initHyperList() {
     this.hyperList = null;
     this.hyperListConfig = {
       // All items must be the exact same height currently. Although since there is
@@ -88,13 +99,26 @@ export default class SideDrawerComponent {
         return domElement;
       },
     };
+  }
 
-    this.drawer = MDCDrawer.attachTo(document.querySelector('#' + this.id));
-    this.idHashmap = {};
+  showPhotosForArea(minLat, maxLat, minLng, maxLng) {
+    this.geotagHeaderElement.style.display = 'none';
+    this.areaHeaderElement.style.display = 'unset';
+    this.areaHeaderElement.querySelector('#side-drawer-latitude').innerHTML = 
+      '[' + minLat.toFixed(4) + ", " + maxLat.toFixed(4) + ']';
+    this.areaHeaderElement.querySelector('#side-drawer-longitude').innerHTML =
+      '[' + minLng.toFixed(4) + ", " + maxLng.toFixed(4) + ']';
+
+    this.clearList();
+    this.service.getPhotosByLatLngRange(minLng, maxLng, minLat, maxLat,
+      function success(photos) {
+        this.addElements(photos);
+      }.bind(this), function error(error) {}.bind(this));
   }
 
   showPhotosForGeaotag(lat, lng) {
-    this.headerElement.style.display = 'unset';
+    this.areaHeaderElement.style.display = 'none';
+    this.geotagHeaderElement.style.display = 'unset';
     this.latitudeElement.innerHTML = 'Latitude: ' + lat.toFixed(4);
     this.longitudeElement.innerHTML = 'Longitude: ' + lng.toFixed(4);
 
@@ -105,7 +129,8 @@ export default class SideDrawerComponent {
   }
 
   showAllPhotos() {
-    this.headerElement.style.display = 'none';
+    this.geotagHeaderElement.style.display = 'none';
+    this.areaHeaderElement.style.display = 'none';
     this.clearList();
     this.service.getAllImages(function (data) {
       for (let i = 0; i < data.length; i++) {
@@ -139,7 +164,7 @@ export default class SideDrawerComponent {
   addElements(elements) {
     if (this.elements === undefined || this.elements.length === 0) {
       this.elements = elements;
-      this.initHyperList();
+      this.setupHyperList();
     } else  {
       this.elements = this.elements.concat(elements);
       this.hyperListConfig.total = this.elements.length;
@@ -191,7 +216,7 @@ export default class SideDrawerComponent {
     }.bind(this), function (error) {}.bind(this));
   }
 
-  initHyperList() {
+  setupHyperList() {
     this.hyperListConfig.total = this.elements.length;
     this.hyperList = HyperList.create(this.listElement, this.hyperListConfig);
   }

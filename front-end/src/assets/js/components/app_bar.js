@@ -32,14 +32,27 @@ export default class AppBarComponent {
         // Cancel the default action, if needed
         event.preventDefault();
         // Trigger the button element with a click
-        this.searchButton.click();
+        this.searchLocation(this.searchInput.value);
       }
     }.bind(this));
-    this.searchButton.addEventListener('click', function (ev) {
-      this.locationService.getLocations(this.searchInput.value, 
-        function success(res) {
-          this.onSearchResults(res);
-        }.bind(this), function error(error) {}.bind(this))
+    this.searchInput.addEventListener("focusin", function (event) {
+      console.log('focusin');
+      
+      this.searchButton.innerText = 'close';
     }.bind(this));
+    this.searchInput.addEventListener("focusout", function (event) {
+      console.log('focusout');
+      this.searchButton.innerText = 'search';
+    }.bind(this));
+    this.searchButton.addEventListener('click', function (ev) {
+      this.searchInput.value = '';
+    }.bind(this));
+  }
+
+  searchLocation(query) {
+    this.locationService.getLocations(query,
+      function success(res) {
+        this.onSearchResults(res);
+      }.bind(this), function error(error) { }.bind(this))
   }
 }

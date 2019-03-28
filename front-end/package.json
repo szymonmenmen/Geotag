@@ -1,6 +1,6 @@
 {
   "name": "Geotag",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Aplikacja do dodawania geotagów do zdjęć",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "htmllint": "node ./dev/html-validator.js",
     "sasslint": "node ./node_modules/sass-lint/bin/sass-lint.js -v -q",
     "test": "npm run build && karma start && npm run eslint && npm run accessibility && npm run htmllint && npm run sasslint",
-    "build": "rm -rf dist/ && webpack -p",
+    "build": "webpack --config webpack.config.js -p",
     "sassdoc": "node ./dev/sassdoc.js",
     "docsserver": "npm run sassdoc && webpack-dev-server --port 8010 --config webpack.docs.config.js --content-base ./docs/ --open"
   },
@@ -57,6 +57,7 @@
     "@material/dialog": "^1.0.1",
     "@material/drawer": "^1.0.1",
     "@material/elevation": "^1.0.0",
+    "@material/fab": "^1.1.0",
     "@material/icon-button": "^1.0.1",
     "@material/image-list": "^1.0.0",
     "@material/linear-progress": "^1.0.0",
@@ -68,6 +69,9 @@
     "drag-drop": "^4.2.0",
     "generate-docs": "^1.1.1",
     "hyperlist": "^1.0.0-beta",
-    "material-components-web": "^1.0.1"
+    "js-cookie": "^2.2.0",
+    "leaflet-area-select": "^1.0.3",
+    "material-components-web": "^1.0.1",
+    "materialize-css": "^1.0.0-rc.2"
   }
 }

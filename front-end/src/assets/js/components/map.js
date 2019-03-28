@@ -1,7 +1,8 @@
 var dragDrop = require('drag-drop')
+import SelectArea from 'leaflet-area-select';
+import Cookies from 'js-cookie';
 import leaflet from "leaflet";
 import PhotoElementModel from "../models/photo_element_model";
-import appConfig from '../config';
 import { MDCMenu } from '@material/menu';
 import SnackbarComponent from "./snackbar";
 
@@ -26,6 +27,8 @@ export default class MapComponent {
     this.markerHashmap = {};
     this.editingGeotag = false;
     this.editedPhotos = [];
+    this.mapState;
+    this.MAP_STATE_COOKIE_NAME = 'mapState';
     this.contextMenu = new MDCMenu(document.getElementById('map-context-menu'));
     this.initMap();
     this.initDragAndDrop();
@@ -37,8 +40,15 @@ export default class MapComponent {
    * @private
    */
   initMap() {
-    this.map = leaflet.map(this.id).setView([51.505, -0.09], 13);
-
+    this.mapState = Cookies.get(this.MAP_STATE_COOKIE_NAME);
+    if (this.mapState === undefined) {
+      this.mapState = { lat: 51.505, lng: -0.09, zoom: 13}
+    } else {
+      this.mapState = JSON.parse(this.mapState);
+    }
+    this.map = leaflet.map(this.id).setView([this.mapState.lat, this.mapState.lng], this.mapState.zoom);
+    this.map.selectArea.enable();
+    this.map.on('areaselected', this.onMapAreaSelected.bind(this));
     leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
@@ -47,6 +57,44 @@ export default class MapComponent {
     this.map.on('move ', function (e) {
       this.contextMenu.open = false;
     }.bind(this));
+    this.map.on('moveend', function (e) {
+      this.mapState.lat = this.map.getCenter().lat;;
+      this.mapState.lng = this.map.getCenter().lng;;
+      this.mapState.zoom = this.map.getZoom();
+      Cookies.set(this.MAP_STATE_COOKIE_NAME, this.mapState);
+    }.bind(this));
+  }
+
+  /**
+   * Metoda wywoływana przy zaznaczeniu obszaru mapy
+   *
+   * @private
+   * @param {*} e event 
+   */
+  onMapAreaSelected(e) {
+    let minLongitude;
+    let minLatitude;
+    let maxLongitude;
+    let maxLatitude;
+    if (e.bounds._northEast.lng === e.bounds._southWest.lng &&
+      e.bounds._northEast.lat === e.bounds._southWest.lat) {
+      return;
+    }
+    if (e.bounds._northEast.lng < e.bounds._southWest.lng) {
+      minLatitude = e.bounds._northEast.lng;
+      maxLatitude = e.bounds._southWest.lng;
+    } else {
+      maxLatitude = e.bounds._northEast.lng;
+      minLatitude = e.bounds._southWest.lng;
+    }
+    if (e.bounds._northEast.lat < e.bounds._southWest.lat) {
+      minLongitude = e.bounds._northEast.lat;
+      maxLongitude = e.bounds._southWest.lat;
+    } else {
+      maxLongitude = e.bounds._northEast.lat;
+      minLongitude = e.bounds._southWest.lat;
+    }
+    this.onMapAreaSelect(minLatitude, maxLatitude, minLongitude, maxLongitude);
   }
 
   /**
@@ -137,14 +185,26 @@ export default class MapComponent {
    * @param {PhotoElementModel} photoElementModels dane zdjęc
    */
   openPhotoPopup(photoElementModels) {
+    let carousel = document.createElement('div');
+    carousel.id = 'popup-carousel';
+    carousel.classList.add('carousel');
+    for (let i = 0; i < photoElementModels.length; i++) {
+      let element = document.createElement('a');
+      element.classList.add('carousel-item');
+      let img = document.createElement('img');
+      img.src = photoElementModels[i].src;
+      element.appendChild(img);
+      carousel.appendChild(element);
+    }
+
     var popup = leaflet.popup({
       closeButton: false,
       autoClose: true
     })
       .setLatLng([photoElementModels[0].latitude, photoElementModels[0].longitude])
-      .setContent('<h3>Latitude: ' + photoElementModels[0].latitude + '</h3><h3>Longitude: ' +
-        photoElementModels[0].longitude + '</h3>')
+      .setContent(carousel.outerHTML)
       .openOn(this.map);
+
   }
 
   /**
@@ -204,6 +264,7 @@ export default class MapComponent {
   startEdition(photoElementModels) {
     document.getElementById(this.id).style.cursor =
       'url(https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png), default';
+    SnackbarComponent.open('Kliknij w mape aby wybrać lokalizacje', '', () => {});
   }
 
   submitEdition(photoElementModels, lat, lng) {

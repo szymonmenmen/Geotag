@@ -20,6 +20,7 @@ export default class GeotagApp {
     this.map = new MapComponent('mapid', service);
     this.map.onFileDropListener = this.onFilesDrop.bind(this);
     this.map.onMarkerClick = this.onMarkerClick.bind(this);
+    this.map.onMapAreaSelect = this.onMapAreaSelect.bind(this);
     this.appBar = new AppBarComponent('app-bar', this.locationService);
     this.appBar.onSearchResults = this.onLocationSearchResults.bind(this);
     this.photoInfoDialog = new PhotoInfoDialogComponent('photo-info-dialog');
@@ -91,8 +92,12 @@ export default class GeotagApp {
     this.map.focusOnGeotag(lat, lng);
   }
 
+  onMapAreaSelect(minLat, maxLat, minLng, maxLng) {
+    this.sideDrawer.open();
+    this.sideDrawer.showPhotosForArea(minLat, maxLat, minLng, maxLng);
+  } 
+
   onMarkerClick(photoElementModels) {
-    console.log(photoElementModels);
     this.sideDrawer.open();
     this.sideDrawer.showPhotosForGeaotag(photoElementModels[0].latitude, photoElementModels[0].longitude);
   }

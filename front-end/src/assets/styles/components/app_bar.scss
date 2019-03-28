@@ -1,5 +1,5 @@
 @import "@material/top-app-bar/mdc-top-app-bar";
-
+@import '../variables.scss';
 .app-bar {
   position: absolute;
 }
@@ -31,5 +31,13 @@
     @include mdc-icon-button-ink-color(black);
     position: relative;
     top: -4px;
+  }
+}
+
+@include media-phone {
+  #location-searchchbox {
+    input {
+      width: 115px;
+    }
   }
 }

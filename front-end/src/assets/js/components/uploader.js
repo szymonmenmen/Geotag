@@ -50,13 +50,6 @@ export default class UploaderComponent {
   saveGeotagToServer(filename, base64, latitude, longitude, callback) {
     this.service.saveImage(filename, base64, latitude, longitude,
       function (id) {
-        // this.onFileUploadedListener({
-        //   id: id,
-        //   file_name: filename,
-        //   src: appConfig.baseServerAddress + appConfig.endpoins.thumbnail + '/' + id,
-        //   latitude: latitude,
-        //   longitude: longitude
-        // });
         callback(undefined, id);
       }.bind(this),
       function (error) {

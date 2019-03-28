@@ -3,5 +3,17 @@
   height: 100%;
   width: 100%;
 
-  position: relative;
+  position: fixed;
+
+  .leaflet-popup-content-wrapper {
+    height: 230px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 339px;
+
+    a {
+      display: block;
+      margin-bottom: 13px;
+    }
+  }
 }
