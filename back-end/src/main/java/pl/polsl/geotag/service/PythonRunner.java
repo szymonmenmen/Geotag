@@ -1,33 +1,28 @@
 package pl.polsl.geotag.service;
 
-import org.python.core.PyObject;
-import org.python.core.PyString;
-import org.python.util.PythonInterpreter;
 import org.springframework.stereotype.Service;
+import pl.polsl.geotag.decoder.Base64Decoder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 @Service
 public class PythonRunner {
 
-    public String convertImage(String bytes) throws FileNotFoundException {
+    private static final String PYTHON_FILE_PATH = "python/ThumbnailCreator.py";
 
-        PythonInterpreter pythonInterpreter = new PythonInterpreter();
-         File pythonFile = new File("python/ThumbnailCreator.py");
-        InputStream is = new FileInputStream(pythonFile);
-        pythonInterpreter.execfile(is);
-        PyObject function = pythonInterpreter.get("decode_img");
-        PyObject result = function.__call__(new PyString(bytes));
-        String napis = (String) result.__tojava__(String.class);
+    public byte[] createThumbnail(String id) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", PYTHON_FILE_PATH, id);
+            Process p = pb.start();
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String scriptResult = in.readLine();
+            return Base64Decoder.decodeValue(scriptResult);
 
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
-        System.out.println(napis);
-
-
-//        pythonInterpreter.eval("repr(createThumbnail())");
         return null;
     }
 }

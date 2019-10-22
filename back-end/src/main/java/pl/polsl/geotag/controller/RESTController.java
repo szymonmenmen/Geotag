@@ -11,8 +11,6 @@ import pl.polsl.geotag.service.ImageService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 @RequestMapping("/api")
@@ -37,6 +35,11 @@ public class RESTController {
         return imageService.downloadImage(imageId);
     }
 
+    @GetMapping("/base64/{image_id}")
+    public ResponseEntity<?> getBase64Image(@PathVariable(value = "image_id") UUID imageId) {
+        return imageService.getBase64Image(imageId);
+    }
+
     @PutMapping("/geotag/{image_id}")
     public ResponseEntity<?> updateImage(@PathVariable(value = "image_id") UUID imageId, @Valid @RequestBody UpdateImageDTO updateImageDTO) {
         return imageService.updateImage(imageId, updateImageDTO);
@@ -48,7 +51,7 @@ public class RESTController {
     }
 
     @GetMapping("/downloads/thumbnail/{image_id}")
-    public ResponseEntity<?> downloadThumbnail(@PathVariable(value = "image_id") UUID imageId) throws UnsupportedEncodingException, FileNotFoundException {
+    public ResponseEntity<?> downloadThumbnail(@PathVariable(value = "image_id") UUID imageId) {
         return imageService.downloadThumbnail(imageId);
     }
 

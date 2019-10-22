@@ -15,10 +15,7 @@ import pl.polsl.geotag.exception.RepositoryException;
 import pl.polsl.geotag.model.Image;
 import pl.polsl.geotag.repository.ImageRepository;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +26,6 @@ import java.util.stream.Collectors;
 @Service
 public class ImageService {
 
-    public static final int THUMBNAIL_WIDTH = 300;
-    public static final int THUMBNAIL_HEIGHT = 200;
     @Autowired
     ImageRepository imageRepository;
     @Autowired
@@ -79,35 +74,13 @@ public class ImageService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> downloadThumbnail(UUID imageId) throws UnsupportedEncodingException, FileNotFoundException {
+    public ResponseEntity<?> downloadThumbnail(UUID imageId) {
         Image image = getImage(imageId);
-        byte[] data = image.getData();
+        byte[] thumbnail = pythonRunner.createThumbnail(imageId.toString());
 
-        byte[] thumbnail = convertToThumbnail(data);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getType())) //
                 .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", image.getName())) //
                 .body(new ByteArrayResource(thumbnail));
-    }
-
-    private byte[] convertToThumbnail(byte[] data) throws UnsupportedEncodingException, FileNotFoundException {
-        pythonRunner.convertImage(new String(Base64.encodeBase64(data), "UTF-8"));
-        ByteArrayInputStream in = new ByteArrayInputStream(data);
-        try {
-            BufferedImage img = ImageIO.read(in);
-            //TODO scale image by %
-
-            java.awt.Image scaledImage = img.getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, java.awt.Image.SCALE_SMOOTH);
-            BufferedImage imageBuff = new BufferedImage(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, BufferedImage.TYPE_INT_RGB);
-            imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0, 0, 0), null);
-
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-            ImageIO.write(imageBuff, "jpg", buffer);
-
-            return buffer.toByteArray();
-        } catch (IOException e) {
-            throw new RepositoryException("IOException in scale");
-        }
     }
 
     public ResponseEntity<?> getAllImages(String baseUrl) {
@@ -184,5 +157,13 @@ public class ImageService {
                 && image.getLatitude() <= coordinatesRangeDTO.getMaxLatitude() //
                 && image.getLongitude() >= coordinatesRangeDTO.getMinLongitude() //
                 && image.getLongitude() <= coordinatesRangeDTO.getMaxLongitude();
+    }
+
+    public ResponseEntity<?> getBase64Image(UUID imageId) {
+        Image image = getImage(imageId);
+        String base64 = new String(Base64.encodeBase64(image.getData()), StandardCharsets.UTF_8);
+        String response = new JSONObject().put("data", base64).toString();
+
+        return ResponseEntity.ok().body(response);
     }
 }
