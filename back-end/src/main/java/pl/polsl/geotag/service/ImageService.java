@@ -1,5 +1,6 @@
 package pl.polsl.geotag.service;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -17,9 +18,7 @@ import pl.polsl.geotag.repository.ImageRepository;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +33,8 @@ public class ImageService {
     public static final int THUMBNAIL_HEIGHT = 200;
     @Autowired
     ImageRepository imageRepository;
+    @Autowired
+    PythonRunner pythonRunner;
 
     public ResponseEntity<?> addImage(final CreateImageDTO createImageDTO) {
         //TODO save latitude & longitude to image
@@ -78,7 +79,7 @@ public class ImageService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> downloadThumbnail(UUID imageId) {
+    public ResponseEntity<?> downloadThumbnail(UUID imageId) throws UnsupportedEncodingException, FileNotFoundException {
         Image image = getImage(imageId);
         byte[] data = image.getData();
 
@@ -88,7 +89,8 @@ public class ImageService {
                 .body(new ByteArrayResource(thumbnail));
     }
 
-    private byte[] convertToThumbnail(byte[] data) {
+    private byte[] convertToThumbnail(byte[] data) throws UnsupportedEncodingException, FileNotFoundException {
+        pythonRunner.convertImage(new String(Base64.encodeBase64(data), "UTF-8"));
         ByteArrayInputStream in = new ByteArrayInputStream(data);
         try {
             BufferedImage img = ImageIO.read(in);
