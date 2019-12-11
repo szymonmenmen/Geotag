@@ -9,5 +9,4 @@ public class GeotagApplication {
     public static void main(String[] args) {
         SpringApplication.run(GeotagApplication.class, args);
     }
-
 }
