@@ -82,5 +82,4 @@ public class RESTController {
     private String getBaseUrl(HttpServletRequest request) {
         return String.format("%s://%s:%d/api", request.getScheme(), request.getServerName(), request.getServerPort());
     }
-
 }
