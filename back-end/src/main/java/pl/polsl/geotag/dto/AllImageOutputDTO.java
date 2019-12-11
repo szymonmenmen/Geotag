@@ -10,6 +10,7 @@ public class AllImageOutputDTO {
 
     @JsonProperty("images")
     private List<ImageOutputDTO> positiveAnswers;
+    
 
     public List<ImageOutputDTO> getPositiveAnswers() {
         return positiveAnswers;
