@@ -32,7 +32,6 @@ public class ImageService {
     PythonRunner pythonRunner;
 
     public ResponseEntity<?> addImage(final CreateImageDTO createImageDTO) {
-        //TODO save latitude & longitude to image
         byte[] data = Base64Decoder.decodeValue(createImageDTO.getBase64());
         String type = decodeType(createImageDTO.getFileName());
 
@@ -42,6 +41,7 @@ public class ImageService {
         String response = new JSONObject().put("id", newImage.getId()).toString();
         return ResponseEntity.ok(response);
     }
+
 
     public ResponseEntity<?> deleteImage(UUID imageId) {
         imageRepository.deleteById(imageId);
