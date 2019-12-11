@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
  */
 @Service
 public class PythonRunner {
-
     private static final String PYTHON_FILE_PATH = "python/ThumbnailCreator.py";
 
     public byte[] createThumbnail(String id) {
