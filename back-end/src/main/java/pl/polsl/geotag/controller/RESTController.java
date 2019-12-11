@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 /**
- * Main REST Controller
+ * Main REST Controller.
  */
 @RequestMapping("/api")
 @RestController
