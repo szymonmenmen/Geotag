@@ -20,10 +20,10 @@ public class PythonRunner {
             BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String scriptResult = in.readLine();
             return Base64Decoder.decodeValue(scriptResult);
-
         } catch (Exception e) {
             System.out.println(e);
         }
+        
         return null;
     }
 }
