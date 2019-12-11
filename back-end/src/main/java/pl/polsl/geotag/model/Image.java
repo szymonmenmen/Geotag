@@ -84,4 +84,5 @@ public class Image {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+    
 }
