@@ -5,7 +5,9 @@ import pl.polsl.geotag.decoder.Base64Decoder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
+/**
+ * Run python script
+ */
 @Service
 public class PythonRunner {
 
@@ -22,7 +24,6 @@ public class PythonRunner {
         } catch (Exception e) {
             System.out.println(e);
         }
-
         return null;
     }
 }
