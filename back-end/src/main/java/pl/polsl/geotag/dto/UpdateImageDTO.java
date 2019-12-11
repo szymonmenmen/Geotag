@@ -17,6 +17,7 @@ public class UpdateImageDTO {
     public double getLongitude() {
         return longitude;
     }
+    
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
