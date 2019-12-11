@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
-
+/**
+ * Main REST Controller
+ */
 @RequestMapping("/api")
 @RestController
 public class RESTController {
