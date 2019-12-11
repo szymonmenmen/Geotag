@@ -16,4 +16,5 @@ public class RepositoryException extends RuntimeException {
     public String getMessage() {
         return message;
     }
+    
 }
