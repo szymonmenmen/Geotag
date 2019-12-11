@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 public class ImageOutputDTO {
+    
     private UUID id;
 
     @JsonProperty("file_name")

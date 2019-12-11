@@ -3,7 +3,9 @@ package pl.polsl.geotag.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
-
+/**
+ * DTO which represent Image 
+ */
 public class CreateImageDTO {
     @NotNull
     @JsonProperty("file_name")
