@@ -1,6 +1,7 @@
 package pl.polsl.geotag.dto;
 
 public class UpdateImageDTO {
+    
     private double latitude;
 
     private double longitude;
