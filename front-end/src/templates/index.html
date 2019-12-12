@@ -28,8 +28,10 @@
         </div>
       </section>
   </header>
+  
   <!-- Panel boczny -->
   <aside id="side-drawer" class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
+  
     <!-- Naglowek dla wybranego geotagu -->
     <div id="side-drawer-geotag-header" class="mdc-drawer__header">
       <button id="side-drawer-arrow-back-button" class="side-drawer-arrow-back-button mdc-icon-button material-icons">arrow_back</button>
@@ -38,6 +40,7 @@
       <h6 id="side-drawer-longitude" class="mdc-drawer__subtitle"></h6>
       <hr class="mdc-list-divider">
     </div>
+	
     <!-- Header dla wybranego obszaru -->
     <div id="side-drawer-area-header" class="mdc-drawer__header">
       <button id="side-drawer-arrow-back-button-2" class="side-drawer-arrow-back-button mdc-icon-button material-icons">arrow_back</button>
@@ -48,6 +51,7 @@
       <h6 id="side-drawer-longitude" class="mdc-drawer__subtitle"></h6>
       <hr class="mdc-list-divider">
     </div>
+	
     <!-- Lista zdjec -->
     <div id="side-drawer-list" class="mdc-drawer__content">
       <ul id="photo-list" class="mdc-image-list goetag-image-list">
@@ -60,12 +64,15 @@
               <span class="mdc-typography mdc-image-list__supporting"></span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+			
               <!-- Przycisk info o zdjeciu -->
               <a href="#" class="photo-info-button material-icons mdc-top-app-bar__action-item mdc-icon-button"
                 aria-label="Download" alt="Info" title="Informacje o zdjęciu">info</a>
+				
               <!-- Przycisk usuniecia zdjecia -->
               <a href="#" class="photo-delete-button material-icons mdc-top-app-bar__action-item mdc-icon-button"
                 aria-label="Download" alt="Edit" title="Edytuj geotag">delete</a>
+				
               <!-- Przycisk pobrania zdjecia -->
               <a href="#" class="photo-download-button material-icons mdc-top-app-bar__action-item mdc-icon-button"
                 aria-label="Download" alt="Download" title="Pobierz">file_download</a>
@@ -78,8 +85,10 @@
 
   <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
     <main class="main-content" id="main-content">
+	
       <!-- Mapa -->
       <div id="mapid"></div>
+	  
       <!-- Menu kontekstowe do edycji znacznika -->
       <div id="map-context-menu" class="mdc-menu mdc-menu-surface" tabindex="-1">
         <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
@@ -157,12 +166,15 @@
               <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
             </svg>
           </div>
+		  
           <!-- Lista z przesylanymi zdjeciami -->
           <ul id="uploaded-photos-list" class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
             <li id="uploaded-photos-template" class="mdc-image-list__item">
+			
               <!-- Przesylany obrazek -->
               <img class="mdc-image-list__image" src="" alt="przesyłane zdjęcie">
               <div class="mdc-image-list__supporting">
+			  
                 <!-- Nazwa pliku -->
                 <span class="mdc-image-list__label"></span>
               </div>
@@ -201,6 +213,7 @@
           Nazwa pliku
         </h2>
         <div class="mdc-dialog__content" id="info-dialog-content">
+		
           <!-- Lista z przesylanymi zdjeciami -->
           <img id="photo-info-dialog-photo" src="" alt="Wybrane zdjęcie">
           <div>
@@ -212,6 +225,7 @@
             <span>longitude: <span id="photo-info-dialog-longitude">--</span></span>
           </div>
         </div>
+		
         <footer class="mdc-dialog__actions">
           <button type="button" class="mdc-button mdc-dialog__button" id="info-dialog-dismiss-button"
             data-mdc-dialog-action="no">
