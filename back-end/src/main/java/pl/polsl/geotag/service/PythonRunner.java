@@ -2,12 +2,9 @@ package pl.polsl.geotag.service;
 
 import org.springframework.stereotype.Service;
 import pl.polsl.geotag.decoder.Base64Decoder;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-/**
- * Run python script
- */
+
 @Service
 public class PythonRunner {
 
@@ -22,8 +19,7 @@ public class PythonRunner {
             return Base64Decoder.decodeValue(scriptResult);
         } catch (Exception e) {
             System.out.println(e);
-        }
-        
+        }        
         return null;
     }
 }
