@@ -14,7 +14,6 @@ import pl.polsl.geotag.dto.*;
 import pl.polsl.geotag.exception.RepositoryException;
 import pl.polsl.geotag.model.Image;
 import pl.polsl.geotag.repository.ImageRepository;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +33,7 @@ public class ImageService {
     public ResponseEntity<?> addImage(final CreateImageDTO createImageDTO) {
         byte[] data = Base64Decoder.decodeValue(createImageDTO.getBase64());
         String type = decodeType(createImageDTO.getFileName());
-
         Image image = new Image(data, createImageDTO.getFileName(), type, createImageDTO.getLatitude(), createImageDTO.getLongitude());
-
         Image newImage = imageRepository.save(image);
         String response = new JSONObject().put("id", newImage.getId()).toString();
         return ResponseEntity.ok(response);
@@ -60,7 +57,6 @@ public class ImageService {
         image.setLatitude(updateImageDTO.getLatitude());
         image.setLongitude(updateImageDTO.getLongitude());
         imageRepository.save(image);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -70,14 +66,12 @@ public class ImageService {
                 .put("latitude", image.getLatitude()) //
                 .put("longitude", image.getLongitude()) //
                 .toString();
-
         return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<?> downloadThumbnail(UUID imageId) {
         Image image = getImage(imageId);
         byte[] thumbnail = pythonRunner.createThumbnail(imageId.toString());
-
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getType())) //
                 .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", image.getName())) //
                 .body(new ByteArrayResource(thumbnail));
@@ -86,20 +80,17 @@ public class ImageService {
     public ResponseEntity<?> getAllImages(String baseUrl) {
         List<Image> imageList = imageRepository.findAll();
         Map<Double, Map<Double, List<Image>>> map = imageList.stream().collect(Collectors.groupingBy(Image::getLatitude, Collectors.groupingBy(Image::getLongitude)));
-
         List<AllImageOutputDTO> imageOutputDTOS = new ArrayList<>();
         map.values().forEach(nestedMap ->
                 nestedMap.values().forEach(images ->
                         imageOutputDTOS.add(createImageOutputDto(baseUrl, images))));
-
         SortedImageDTO sortedImageDTOS = new SortedImageDTO(imageOutputDTOS);
         return ResponseEntity.ok().body(sortedImageDTOS);
     }
 
     private AllImageOutputDTO createImageOutputDto(String baseUrl, List<Image> imageList) {
         List<ImageOutputDTO> outputDTOList = new ArrayList<>();
-        imageList.forEach(image ->
-        {
+        imageList.forEach(image -> {
             ImageOutputDTO imageOutputDTO = mapImageToOutput(image, baseUrl);
             outputDTOList.add(imageOutputDTO);
         });
@@ -112,10 +103,8 @@ public class ImageService {
         imageOutputDTO.setId(image.getId());
         imageOutputDTO.setLatitude(image.getLatitude());
         imageOutputDTO.setLongitude(image.getLongitude());
-
         String src = createThumbnailUrl(image.getId(), baseUrl);
         imageOutputDTO.setSrc(src);
-
         return imageOutputDTO;
     }
 
@@ -139,7 +128,6 @@ public class ImageService {
     public ResponseEntity<?> getImagesByCoordinates(double latitude, double longitude, String baseUrl) {
         List<Image> imageList = imageRepository.findAll();
         List<Image> filteredImageList = imageList.stream().filter(image -> image.getLatitude() == latitude && image.getLongitude() == longitude).collect(Collectors.toList());
-
         AllImageOutputDTO response = createImageOutputDto(baseUrl, filteredImageList);
         return ResponseEntity.ok().body(response);
     }
@@ -147,7 +135,6 @@ public class ImageService {
     public ResponseEntity<?> getImagesByCoordinatesRange(CoordinatesRangeDTO coordinatesRangeDTO, String baseUrl) {
         List<Image> imageList = imageRepository.findAll();
         List<Image> filteredImageList = imageList.stream().filter(filterCoordinates(coordinatesRangeDTO)).collect(Collectors.toList());
-
         AllImageOutputDTO response = createImageOutputDto(baseUrl, filteredImageList);
         return ResponseEntity.ok().body(response);
     }
