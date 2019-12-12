@@ -8,11 +8,11 @@ from PIL import Image
 
 
 def decode_img(msg):
-    newsize = (300, 200)
+    new_size = (300, 200)
     msg = base64.b64decode(msg)
     buf = io.BytesIO(msg)
     img = Image.open(buf)
-    img.thumbnail(newsize)
+    img.thumbnail(new_size)
     buf = io.BytesIO()
     img.save(buf, 'PNG')
     buf.seek(0)
