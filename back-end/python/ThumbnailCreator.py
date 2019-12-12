@@ -22,7 +22,7 @@ def decode_img(msg):
 
 
 id = sys.argv[1]
-resp = requests.get('http://localhost:8082/api/base64/' + id)
-jsonData = json.loads(resp.content.decode("utf-8"))
+response = requests.get('http://localhost:8082/api/base64/' + id)
+jsonData = json.loads(response.content.decode("utf-8"))
 message = jsonData['data']
 print(decode_img(message))
