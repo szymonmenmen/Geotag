@@ -36,7 +36,7 @@
     "html-loader": "^0.4.5",
     "html-validator": "^2.2.0",
     "jasmine-core": "^2.5.2",
-    "karma": "^1.5.0",
+    "karma": "^6.3.16",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sourcemap-loader": "^0.3.7",
